@@ -1,47 +1,33 @@
+<div align="center">
+
 # FoxOne
 
-A minimalistic one-line `userChrome.css` theme for Firefox.
 
-<img width="1920" height="1280" alt="foxone_bg2" src="https://github.com/user-attachments/assets/9d5588ce-c035-4f61-baf0-2a82e85199a3" />
+**A minimalist one-line Firefox theme**
 
-### Features
+![FoxOne Preview](https://github.com/user-attachments/assets/9d5588ce-c035-4f61-baf0-2a82e85199a3)
 
-- One-line layout – URL bar and tabs share a single row
-- Clean URL bar – non-essential icons hidden by default
-- Hover reveal – non-essential icons slide in with animated transitions on hover/focus
-- Hamburger menu repositioned next to window controls
-- Tab close button visible on hover
-- Configurable via CSS variables at the top of the file
+One-line layout. Clean URL bar. Hover-reveal icons. Gruvbox colors. Nothing else.
 
-<img width="800" height="55" alt="foxone" src="https://github.com/user-attachments/assets/faf46c71-6b44-418b-a281-0c6348f906ac" />
+<br>
 
-### Installation
+<div>
+  <a href="https://github.com/Firnschnee/FoxOne/stargazers">
+    <img
+      alt="Stars"
+      src="https://img.shields.io/github/stars/Firnschnee/FoxOne?style=for-the-badge&logo=starship&color=fabd2f&logoColor=white&labelColor=282828"
+  /></a>
+  <a href="https://github.com/Firnschnee/FoxOne/issues">
+    <img
+      alt="Issues"
+      src="https://img.shields.io/github/issues/Firnschnee/FoxOne?style=for-the-badge&logo=gitbook&color=fb4934&logoColor=white&labelColor=282828"
+  /></a>
+</div>
 
-1. Download [`userChrome.css`](https://github.com/Firnschnee/FoxOne/blob/main/userChrome.css).
-2. In Firefox, go to `about:config` and set `toolkit.legacyUserProfileCustomizations.stylesheets` to `true`.
-3. In Firefox, go to `about:support` and open your Profile Folder. Create a `chrome` folder if it doesn't exist.
-4. Copy `userChrome.css` into the `chrome` folder and restart Firefox.
+</div>
 
-### Customization
+---
 
-All configuration lives in the `:root` block at the top of the file. Key variables:
-
-| Variable | Default | Description |
-|---|---|---|
-| `--uc-border-radius` | `8px` | Global corner radius |
-| `--uc-urlbar-min-width` | `35vw` | URL bar width |
-| `--uc-urlbar-position` | `1` | URL bar position (1 = left, 3 = right) |
-| `--uc-active-tab-width` | `clamp(100px, 30vw, 250px)` | Active tab width |
-| `--uc-inactive-tab-width` | `clamp(100px, 20vw, 200px)` | Inactive tab width |
-| `--uc-window-buttons-width` | `138px` | Windows control button width |
-| `--uc-toolbar-position` | `4` | Bookmarks bar position (0 = top, 4 = bottom) |
-
-Works well with the ColorTheme.
-
-### Credits
-
-Based on [Cascade](https://github.com/andreasgrafen/cascade), inspired by [LittleFox](https://github.com/biglavis/LittleFox).
-
-### License
-
-MIT License – see [LICENSE](LICENSE)
+**[Installation](docs/installation.md) & [Customisation](docs/customisation.md)** |
+Based on and inspired by cascadefox' [Cascade](https://github.com/andreasgrafen/cascade) & biglavis' [LittleFox](https://github.com/biglavis/LittleFox) themes |
+License: [MIT](LICENSE)

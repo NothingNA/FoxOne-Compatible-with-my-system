@@ -88,6 +88,7 @@
     /* URL bar */
     --toolbar-field-background-color: #1d2021 !important;
     --toolbar-field-color: #FFFFFF !important;
+    --toolbar-field-focus-color: #FFFFFF !important;
     --toolbar-field-focus-border-color: #fabd2f !important;
     --toolbar-field-focus-background-color: #3c3836 !important;
 
@@ -111,6 +112,11 @@
   /* Selected tab text */
   .tabbrowser-tab[selected] {
     color: #fabd2f !important;
+  }
+
+  /* URL bar result text — override dark system color on selected row */
+  .urlbarView-row[selected] > .urlbarView-row-inner {
+    color: #FFFFFF !important;
   }
 }
 

@@ -7,7 +7,7 @@
 
 One-line layout. Clean URL bar. Hover-reveal icons. Gruvbox colors. Nothing else.
 
-Want to see it in action? [Click here for gifs](https://github.com/Firnschnee/FoxOne/blob/main/docs/action.md)
+Want to see it in action? [Watch the animations!](https://github.com/Firnschnee/FoxOne/blob/main/docs/action.md)
 
 <br>
 

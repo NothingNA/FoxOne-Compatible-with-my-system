@@ -26,6 +26,15 @@ All configuration lives in the `:root` block at the top of `userChrome.css`.
 | `--show-tab-close-button-hover` | `-moz-inline-block` | Tab close button on hover |
 | `--uc-show-loading-progress` | `1` | Tab loading progress bar (`1` = show, `0` = hide) |
 
+### Active Tab Highlight
+
+| Variable | Default | Description |
+|---|---|---|
+| `--uc-active-tab-background` | `transparent` | Background tint for active tab (`transparent` = off, e.g. `#3c3836` for subtle Gruvbox tint) |
+| `--uc-active-tab-underline` | `0` | Colored bar below active tab (`1` = show, `0` = hide) |
+
+Both options can be combined for maximum visibility.
+
 ### Container Tabs
 
 | Variable | Default | Description |

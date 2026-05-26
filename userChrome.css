@@ -320,6 +320,49 @@ sidebar-main,
 
 
 /* ==========================================================================
+   macOS — left-side window controls (traffic lights).
+   Restore the pre-tabs spacer that reserves room for close/minimize/
+   fullscreen and zero out the right-side window-button offset since
+   macOS has no controls there.
+   ========================================================================== */
+
+@media (-moz-platform: macos) {
+  :root {
+    /* No right-side window controls on macOS */
+    --uc-window-buttons-width: 0px;
+
+    /* Width reserved for macOS traffic light buttons */
+    --uc-traffic-light-width: 80px;
+  }
+
+  /* Position traffic lights at the left edge of the toolbar, vertically
+     centred.  absolute (not fixed) so the buttons track the toolbox,
+     not the viewport — gives the correct macOS inset. */
+  @media (min-width: 1000px) {
+    #navigator-toolbox {
+      position: relative !important;
+    }
+
+    .titlebar-buttonbox-container {
+      position: absolute !important;
+      left: 0 !important;
+      top: 12px !important;
+      z-index: 1000 !important;
+      display: block !important;
+    }
+
+    /* Reserve left-side space — box-sizing ensures padding stays within
+       the nav-bar's flex width instead of overflowing the layout.
+       Drops in fullscreen where macOS hides the traffic lights. */
+    :root:not([inFullscreen]) #nav-bar {
+      box-sizing: border-box !important;
+      padding-inline-start: var(--uc-traffic-light-width) !important;
+    }
+  }
+}
+
+
+/* ==========================================================================
    NAV BAR
    ========================================================================== */
 

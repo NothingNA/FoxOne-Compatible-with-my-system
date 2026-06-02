@@ -481,6 +481,11 @@ sidebar-main,
 #urlbar[open] > #urlbar-background,
 #urlbar[open] > .urlbar-background {
   background: var(--toolbar-field-background-color) !important;
+  /* Nova ships the open results panel without the border/shadow that used
+     to separate it, so it blends into the page. Restore a 1px outline.
+     Higher specificity (id+class) than the global border:none reset, so it
+     only applies while the dropdown is open; the closed field stays flush. */
+  border: 1px solid var(--uc-color-surface) !important;
 }
 
 .urlbarView-row:hover > .urlbarView-row-inner {

@@ -242,6 +242,14 @@ sidebar-main,
   padding-bottom: 1px;
 }
 
+/* Nova added #trust-icon (site-info/security icon) inside the new
+   #trust-icon-container, sitting next to a flex #trust-label. The icon box
+   is a symmetric 16x16 (no margin/padding), yet Nova renders it ~2px too
+   high relative to the other urlbar icons. Nudge it down to align. */
+#trust-icon {
+  margin-top: 2px !important;
+}
+
 #TabsToolbar { order: 2; }
 #nav-bar { order: 3; }
 

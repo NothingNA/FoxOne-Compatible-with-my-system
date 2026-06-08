@@ -1302,7 +1302,7 @@ tab-split-view-wrapper {
   &[splitview] {
     & .browserContainer {
       .deck-selected > & {
-        outline: 2px solid #fabd2f !important;
+        outline: 1px solid #fabd2f !important;
       }
     }
   }

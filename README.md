@@ -14,6 +14,9 @@ Want to see it in action? [Watch the animations!](https://github.com/Firnschnee/
 
 </div>
 
+---
+
+**Current development branch is `nova` - getting everything ready for the upcoming Firefox Redesign.** 
 
 ---
  

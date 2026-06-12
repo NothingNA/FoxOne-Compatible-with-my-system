@@ -2,7 +2,6 @@
 
 **A minimalistic one-line Firefox theme.**
 > Ready for Nova. Tested and stable on Firefox 152+ with `browser.nova.enabled`.
-> Running classic (pre-Nova) Firefox? [Read here](docs/installation.md)
 > 
 <img width="1920" height="1080" alt="640_1x_shots_so" src="https://github.com/user-attachments/assets/f2d49a1e-f56c-4cf6-b1d2-40a36d1eb084" /><br>
 One-line layout. Clean URL bar. Hover-reveal icons. Gruvbox colors. Nothing else.
@@ -11,7 +10,7 @@ Want to see it in action? [Watch the animations!](https://github.com/Firnschnee/
 
 <br>
 
-
+> Running classic (pre-Nova) Firefox? [Read here](docs/installation.md)
 
 
 ---

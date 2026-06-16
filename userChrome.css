@@ -1276,13 +1276,27 @@ browser[type="content"],
 }
 
 
-/* tab group labels */
-.tab-group-label-container > .tab-group-label {
+/* tab group labels — replace the FF152 inflated pastel pill with a compact,
+   saturated filled chip: the group's full colour (--tab-group-color, never the
+   pale "invert") with light text. One rule covers both the expanded label and
+   the collapsed group button, so the two stay consistent.
+   Nova inserted a .tab-group-label-hover-highlight wrapper between the container
+   and the label, so a direct-child (>) combinator no longer matches; use a
+   descendant combinator to step over it. White text is used deliberately: it
+   stays legible on every group colour, where the pale token would not. */
+.tab-group-label-container .tab-group-label {
   outline: none !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  line-height: 1.6 !important;
+  padding-block: 1px !important;
+  padding-inline: 8px !important;
   border-radius: var(--uc-border-radius) !important;
-  width: 100%;
-  color: light-dark(var(--tab-group-color-pale), var(--tab-group-label-text-dark)) !important;
-  background-color: light-dark(var(--tab-group-color), var(--tab-group-color-invert)) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  color: #fff !important;
+  background-color: var(--tab-group-color) !important;
+  transform: translateY(1px) !important; /* centre the pill on the label text (was 8px top / 6px bottom) */
 }
 
 

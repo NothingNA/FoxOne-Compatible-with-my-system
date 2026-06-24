@@ -736,6 +736,95 @@ sidebar-main,
 
 
 /* ==========================================================================
+   ICON COLOURING – hover/active feedback by fill, not by background.
+   Mirrors the tab-title model (issue #16): inactive white, hover #ffda85,
+   active/open the accent. Colour is the sole interaction signal, so there is
+   no hover chip and no square/round inconsistency left to chase. The bookmark
+   star (native amber-when-set logic) and the window controls stay untouched.
+   ========================================================================== */
+
+/* Toolbar buttons: back/forward/reload, library, extensions, hamburger.
+   Override --toolbarbutton-icon-fill on the button so the icon inherits it,
+   independent of the .toolbarbutton-icon / badge-stack nesting, and drop the
+   native hover/active background so colour alone signals the interaction. */
+#nav-bar .toolbarbutton-1 {
+  --toolbarbutton-hover-background: transparent !important;
+  --toolbarbutton-active-background: transparent !important;
+}
+/* The variable above does not cover every channel, so also clear the chip
+   directly on the icon/badge-stack in the hover and active/open states. */
+#nav-bar .toolbarbutton-1:hover > .toolbarbutton-icon,
+#nav-bar .toolbarbutton-1:hover > .toolbarbutton-badge-stack,
+#nav-bar .toolbarbutton-1:is(:active, [open]) > .toolbarbutton-icon,
+#nav-bar .toolbarbutton-1:is(:active, [open]) > .toolbarbutton-badge-stack {
+  background-color: transparent !important;
+}
+#nav-bar .toolbarbutton-1:hover {
+  --toolbarbutton-icon-fill: var(--uc-tab-hover-text) !important;
+}
+#nav-bar .toolbarbutton-1:is(:active, [open]) {
+  --toolbarbutton-icon-fill: var(--tab-selected-textcolor, #fabd2f) !important;
+}
+
+/* The new-tab "+" lives in the tab strip, not #nav-bar, so the rules above
+   miss it. Same fill model and background clear, scoped to its two ids. */
+:is(#tabs-newtab-button, #new-tab-button) {
+  --toolbarbutton-hover-background: transparent !important;
+  --toolbarbutton-active-background: transparent !important;
+}
+:is(#tabs-newtab-button, #new-tab-button):is(:hover, :active, [open]) > :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+  background-color: transparent !important;
+}
+:is(#tabs-newtab-button, #new-tab-button):hover {
+  --toolbarbutton-icon-fill: var(--uc-tab-hover-text) !important;
+}
+:is(#tabs-newtab-button, #new-tab-button):is(:active, [open]) {
+  --toolbarbutton-icon-fill: var(--tab-selected-textcolor, #fabd2f) !important;
+}
+
+/* urlbar action icons: shield, site-settings, page actions, reader,
+   translations. They paint via fill directly; the bookmark star is excluded
+   so its native state colour survives, and the icon background is dropped so
+   colour alone signals here too. */
+/* Hover background sits on the button container (e.g.
+   #identity-permission-box.identity-box-button), not on the .urlbar-icon image,
+   so clearing it on .urlbar-icon alone was not enough. Clear it on the button
+   containers too; the bookmark star box keeps its native background. */
+#urlbar .urlbar-icon:not(#star-button),
+#urlbar .urlbar-page-action,
+#urlbar .identity-box-button,
+#urlbar #tracking-protection-icon-container,
+#urlbar #trust-icon-container {
+  background-color: transparent !important;
+}
+#urlbar .urlbar-icon:not(#star-button):hover,
+#urlbar .urlbar-page-action:hover .urlbar-icon {
+  fill: var(--uc-tab-hover-text) !important;
+}
+#urlbar .urlbar-icon:not(#star-button):is(:active, [open]),
+#urlbar .urlbar-page-action:is(:active, [open]) .urlbar-icon {
+  fill: var(--tab-selected-textcolor, #fabd2f) !important;
+}
+
+/* Shield (tracking protection) and the site-info/settings icon use their own
+   ids rather than a plain .urlbar-icon, and may paint via fill OR color, so
+   set both, triggered by hovering the icon's container. If one still does not
+   recolour, its image node uses a different channel and needs a Toolbox read. */
+#tracking-protection-icon-container:hover #tracking-protection-icon,
+#trust-icon-container:hover #trust-icon,
+#urlbar .identity-box-button:hover {
+  fill: var(--uc-tab-hover-text) !important;
+  color: var(--uc-tab-hover-text) !important;
+}
+#tracking-protection-icon-container:is(:active, [open]) #tracking-protection-icon,
+#trust-icon-container:is(:active, [open]) #trust-icon,
+#urlbar .identity-box-button:is(:active, [open]) {
+  fill: var(--tab-selected-textcolor, #fabd2f) !important;
+  color: var(--tab-selected-textcolor, #fabd2f) !important;
+}
+
+
+/* ==========================================================================
    LOADING PROGRESS BAR — active tab bottom indicator.
    Animated glow bar at the bottom of the selected tab while loading.
    Same visual style as the pinned-tab indicator (::after), using ::before

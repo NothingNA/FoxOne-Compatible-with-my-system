@@ -825,6 +825,29 @@ sidebar-main,
 
 
 /* ==========================================================================
+   BOOKMARKS BAR – colour-as-signal, same model as the icons above and the
+   tab titles (issue #16). Drop the native hover/active chip on each bookmark
+   so the title text alone signals the interaction: inactive native white,
+   hover #ffda85, active press or open folder the accent. The favicon is a
+   real image, not a recolourable mask, so it stays native – like a tab, the
+   icon sits left and the title carries the colour. Scoped to #PersonalToolbar
+   so bookmarks in menus and the sidebar keep their native behaviour.
+   ========================================================================== */
+#PersonalToolbar .bookmark-item {
+  --toolbarbutton-hover-background: transparent !important;
+  --toolbarbutton-active-background: transparent !important;
+}
+#PersonalToolbar .bookmark-item:hover {
+  background-color: transparent !important;
+  color: var(--uc-tab-hover-text) !important;
+}
+#PersonalToolbar .bookmark-item:is(:active, [open]) {
+  background-color: transparent !important;
+  color: var(--tab-selected-textcolor, #fabd2f) !important;
+}
+
+
+/* ==========================================================================
    LOADING PROGRESS BAR — active tab bottom indicator.
    Animated glow bar at the bottom of the selected tab while loading.
    Same visual style as the pinned-tab indicator (::after), using ::before

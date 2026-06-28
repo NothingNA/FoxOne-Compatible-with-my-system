@@ -389,7 +389,7 @@ sidebar-main,
 
 #statuspanel #statuspanel-label {
   border: none !important;
-  border-radius: var(--uc-border-radius) !important;
+  border-radius: 0 !important;
   margin: 0 0 var(--uc-status-panel-spacing) var(--uc-status-panel-spacing) !important;
 }
 

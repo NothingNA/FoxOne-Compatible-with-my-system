@@ -1705,7 +1705,9 @@ tab-split-view-wrapper {
    to the right edge since the footer hugs bottom-right, not bottom-left
    (step 2). */
 split-view-footer {
+  border: none !important;
   border-radius: 0 !important;
+  box-shadow: none !important;
   margin: 0 var(--uc-status-panel-spacing) var(--uc-status-panel-spacing) 0 !important;
 }
 

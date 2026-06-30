@@ -14,9 +14,15 @@ Dynamic URL bar with hover-reveal Icons
 
 ![urlbar](assets/dynamic_url.gif)
 
-Dynamic tabs and two extensions of your choice, pinned by the hamburger, revealed on hover.
+<br>
+
+
+Dynamic tabs and two addons pinned by the hamburger, revealed on hover.
 
 ![toolbar](assets/dynamic_toolbar.gif)
+
+
+Running pre-Nova Firefox? Please read
 
 FoxOne is *highly customisable* with variables and works with [Adaptive Tab Bar Colour](https://addons.mozilla.org/firefox/addon/adaptive-tab-bar-colour/)! 
 
@@ -26,4 +32,4 @@ FoxOne is *highly customisable* with variables and works with [Adaptive Tab Bar 
 ---
  
 **[Installation](docs/installation.md) & [Customisation](https://github.com/Firnschnee/FoxOne/blob/main/docs/customisation.md)** |
-Inspired by [Cascade](https://github.com/andreasgrafen/cascade) & [LittleFox](https://github.com/biglavis/LittleFox) | Running pre-Nova Firefox? [Please read](docs/installation.md) | License: [MIT](LICENSE) 
+Inspired by [Cascade](https://github.com/andreasgrafen/cascade) & [LittleFox](https://github.com/biglavis/LittleFox) | It works with Adaptive Tab Bar Colour! | License: [MIT](LICENSE) 

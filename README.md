@@ -16,12 +16,14 @@ Want to see it in action? [Watch the animations!](https://github.com/Firnschnee/
 
 **Dynamic URL**
 
-DYNAMIC URL GIF
+<img width="830" height="170" alt="linke seite" src="https://github.com/user-attachments/assets/84469f5e-2084-48fc-8de8-c2976d53f2f4" />
+
 
 **Dynamic toolbar support.** 
 TAB SWITCH & Two extension icons of your choice, pinned by the hamburger, revealed on hover.
 
-GIF
+<img width="830" height="170" alt="rechte seite" src="https://github.com/user-attachments/assets/075dae82-fd03-422d-8787-b7f66867ee48" />
+
 
 **Customizable Floating Find Bar**
 

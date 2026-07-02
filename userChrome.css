@@ -97,6 +97,9 @@
   --match-diacritics-position: 2;
   --whole-words-position:      3;
 
+  /* Tab loading progress bar (1 = show, 0 = hide) */
+  --uc-show-loading-progress: 0;
+
   /* Navigation buttons — auto-hide with hover reveal (0 = always show, 1 = reveal with hover and focus, 2 = reveal with hover) */
   --uc-autohide-nav-buttons: 0;
 
@@ -875,7 +878,7 @@ sidebar-main,
 
 /* Bottom bar — animated on ALL busy tabs */
 .tabbrowser-tab[busy] .tab-background::before {
-  opacity: 0 !important;
+  opacity: var(--uc-show-loading-progress) !important;
   transition: none !important;
   animation: uc-progress 2.5s cubic-bezier(0.2, 0.6, 0.4, 1) forwards !important;
 }
@@ -898,7 +901,7 @@ sidebar-main,
   background: var(--tab-selected-textcolor, #fabd2f) !important;
   box-shadow: 0 1px 10px 1px var(--tab-selected-textcolor, #fabd2f) !important;
   transform-origin: left !important;
-  opacity: 0 !important;
+  opacity: var(--uc-show-loading-progress) !important;
   animation: uc-progress 2.5s cubic-bezier(0.2, 0.6, 0.4, 1) forwards !important;
   pointer-events: none !important;
 }
@@ -1770,8 +1773,8 @@ html[id^="taskbartab"] #urlbar-container {
   findbar[hidden] { transition: none !important; }
 
   /* Loading progress bar - resting full stroke instead of growth.
-     The bar is hidden via opacity, so this only governs its unseen
-     resting state. */
+     Visibility stays bound to --uc-show-loading-progress, so the feature
+     remains opt-in exactly as before. */
   .tabbrowser-tab .tab-background::before { transition: none !important; }
 
   .tabbrowser-tab[busy] .tab-background::before,

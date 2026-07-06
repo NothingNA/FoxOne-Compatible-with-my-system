@@ -1840,3 +1840,37 @@ html[id^="taskbartab"] #urlbar-container {
     transform: scaleX(1) !important;
   }
 }
+
+/* 彻底隐藏 Nova 新版 #trust-icon 整套安全信任标识（锁/不安全图标） */
+#urlbar #trust-icon-container {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  padding-inline: 0 !important;
+  margin-inline: 0 !important;
+  overflow: hidden !important;
+}
+#trust-icon {
+  display: none !important;
+}
+/* 消除隐藏后地址栏文字左侧空隙，文字左移补齐 */
+#urlbar-input-container {
+  padding-inline-start: 4px !important;
+}
+/* 兼容地址栏展开megabar状态，防止焦点时图标重新出现 */
+#urlbar[breakout-extend] #trust-icon-container {
+  display: none !important;
+}
+
+/* 隐藏右上角汉堡菜单 */
+#PanelUI-button {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+/* 清除标签栏右侧汉堡预留间距 */
+#TabsToolbar-customization-target > toolbaritem:last-of-type {
+  margin-inline-end: 0 !important;
+}

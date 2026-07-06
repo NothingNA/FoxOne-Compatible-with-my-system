@@ -389,7 +389,7 @@ sidebar-main,
    container's +1 for 5px effective; higher specificity (2 ids + attr) beats the
    base nudge, and at rest the selector doesn't match. */
 #urlbar[breakout-extend] #trust-icon {
-  margin-top: 4px !important;
+  margin-top: 3px !important;
   margin-inline-start: 1px !important;
 }
 

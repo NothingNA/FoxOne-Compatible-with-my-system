@@ -1,6 +1,6 @@
 /*==============================================================================================*
 
-  FoxOne 3.3.3 – A minimalistic one-line Firefox theme
+  FoxOne 3.3.4 – A minimalistic one-line Firefox theme
   Based on Cascade (https://github.com/andreasgrafen/cascade)
   Floating Find Bar by LittleFox (https://github.com/biglavis/LittleFox)
   MIT License
@@ -294,6 +294,18 @@
   :root:not([lwtheme]) menupopup :is(menuitem, menu)[_moz-menuactive]:not([disabled]) {
     background-color: transparent !important;
     color: var(--uc-color-accent) !important;
+  }
+  /* Disabled rows have their own hover chip in toolkit menu.css
+     (--menuitem-disabled-hover-background-color); clear that one too. */
+  :root:not([lwtheme]) menupopup :is(menuitem, menu)[_moz-menuactive][disabled] {
+    background-color: transparent !important;
+  }
+  /* Navigation row (back/forward/reload/bookmark icons): a disabled arrow
+     answers hover with the hover yellow at disabled strength, mirroring a
+     disabled toolbar button (#ffda85 under the native 0.4 opacity). Text
+     menuitems keep their native GrayText and are not touched. */
+  :root:not([lwtheme]) #context-navigation > menuitem[_moz-menuactive][disabled] {
+    color: color-mix(in srgb, var(--uc-tab-hover-text) 40%, transparent) !important;
   }
 
   /* Accent & identity – always applied, including under a dynamic theme, so
@@ -1738,6 +1750,9 @@ label.found-matches {
   justify-items: center !important;
   margin-left: 0px !important;
   overflow: hidden !important;
+  /* Base colour for the ::before/::after glyphs below; the hover/checked
+     rules recolour it, same colour-as-signal model as the toolbar icons. */
+  color: var(--toolbar-color) !important;
 }
 .findbar-container > checkbox *{
   display: none !important;
@@ -1770,22 +1785,18 @@ label.found-matches {
 .findbar-highlight::before {
   content: "[ab]";
   font-weight: bold;
-  color: var(--toolbar-color);
 }
 .findbar-case-sensitive::before {
   content: "Aa";
   font-weight: bold;
-  color: var(--toolbar-color);
 }
 .findbar-match-diacritics::before {
   content: "aá";
   font-weight: bold;
-  color: var(--toolbar-color);
 }
 .findbar-entire-word::before {
   content: "ab";
   font-weight: bold;
-  color: var(--toolbar-color);
   grid-row: 1;
   grid-column: 1;
 }
@@ -1794,20 +1805,23 @@ label.found-matches {
   width: 1.3em;
   height: 0.2em;
   margin-bottom: -1em;
-  border-left: 2px solid var(--toolbar-color);
-  border-right: 2px solid var(--toolbar-color);
-  border-bottom: 1px solid var(--toolbar-color);
+  border-left: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  border-bottom: 1px solid currentColor;
   grid-row: 1;
   grid-column: 1;
 }
 
+/* Colour-as-signal instead of the old background chip: hover dims toward
+   #ffda85, an active option holds the accent. Matches the toolbar-icon and
+   tab-title model since 3.3.3. */
 .findbar-container > checkbox:not([checked]):hover {
-  background-color: var(--toolbarbutton-hover-background) !important;
-  border-radius: 4px !important;
+  background-color: transparent !important;
+  color: var(--uc-tab-hover-text) !important;
 }
 .findbar-container > checkbox[checked] {
-  background-color: var(--toolbarbutton-active-background) !important;
-  border-radius: 4px !important;
+  background-color: transparent !important;
+  color: var(--uc-color-accent) !important;
 }
 
 .findbar-closebutton {

@@ -1,6 +1,6 @@
 /*==============================================================================================*
 
-  FoxOne 3.3.2 – A minimalistic one-line Firefox theme
+  FoxOne 3.3.4 – A minimalistic one-line Firefox theme
   Based on Cascade (https://github.com/andreasgrafen/cascade)
   Floating Find Bar by LittleFox (https://github.com/biglavis/LittleFox)
   MIT License
@@ -330,12 +330,14 @@
     color: var(--uc-tab-hover-text) !important;
   }
 
-  /* URL bar results — accent-tinted selection highlight (full row) */
+  /* URL bar results — accent text instead of a background block, the same
+     cue as popup rows and tab hover. Colour sits on the row-inner so the
+     title inherits it; the URL keeps its own colour. */
   .urlbarView-row[selected] {
-    background: color-mix(in srgb, var(--uc-color-accent) 15%, transparent) !important;
+    background: transparent !important;
   }
   .urlbarView-row[selected] > .urlbarView-row-inner {
-    color: var(--uc-color-text) !important;
+    color: var(--uc-color-accent) !important;
     background: transparent !important;
   }
 }
@@ -761,7 +763,8 @@ sidebar-main,
 }
 
 .urlbarView-row:hover > .urlbarView-row-inner {
-  background: var(--toolbar-field-focus-background-color) !important;
+  background: transparent !important;
+  color: var(--uc-color-accent) !important;
 }
 
 /* result-menu button ([...]) — show dots, drop frame around them.
@@ -780,6 +783,12 @@ sidebar-main,
   --urlbarView-action-button-background-color: transparent !important;
   --urlbarView-action-button-hover-background-color: transparent !important;
   --urlbarView-hover-background: transparent !important;
+  /* Nova renamed the row-hover token (lowercase "view", urlbar/tokens.css)
+     and paints it on the row itself, not the row-inner; the camelCase one
+     above is the dead Proton name. Selected counterpart included so both
+     states rely on accent text alone. */
+  --urlbarview-background-color-hover: transparent !important;
+  --urlbarview-background-color-selected: transparent !important;
 }
 
 .urlbarView-row-buttons,

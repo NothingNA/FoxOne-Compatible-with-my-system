@@ -64,6 +64,8 @@ The hand-off keys off the `lwtheme` attribute Firefox sets on the root element w
 
 > The selected tab's title stays in the accent colour by design. On a near-white page colour that is lower contrast than the rest of the chrome; it is a deliberate identity trade-off, not a bug.
 
+> FoxOne's hover and selection cues use accent-coloured text rather than background blocks, which reads best on dark surfaces. Under Adaptive Tab Bar Colour a light page colour can make them look off; for the best result pair FoxOne with dark mode and [Dark Reader](https://addons.mozilla.org/firefox/addon/darkreader/) instead.
+
 ### Scrollbar (`userContent.css`)
 
 | Variable | Default | Description |

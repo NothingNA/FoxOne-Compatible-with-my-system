@@ -265,6 +265,14 @@
        at 0 via their own :not([type="arrow"]) branch. Pin both to square so
        every popup matches the findbar / context-menu / breakout-urlbar look. */
     --panel-border-radius: 0 !important;
+    /* Row-level hover/select highlight has its own radius, separate from the
+       panel's outer corners: --menuitem-border-radius drives native menuitems
+       (context menus), --panel-menuitem-border-radius drives subviewbuttons
+       (hamburger menu rows, extensions panel rows and its gear icon). Both
+       default to a design-token radius (menu.css / tokens-shared.css); square
+       both so the selection colour matches the panel it sits in. */
+    --menuitem-border-radius: 0 !important;
+    --panel-menuitem-border-radius: 0 !important;
   }
 
   /* Context-menu item hover. Toolkit paints it with the -moz-menuhover

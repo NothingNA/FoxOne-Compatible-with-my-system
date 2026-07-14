@@ -1,6 +1,6 @@
 /*==============================================================================================*
 
-  FoxOne 3.3.4 – A minimalistic one-line Firefox theme
+  FoxOne 3.3.7 – A minimalistic one-line Firefox theme
   Based on Cascade (https://github.com/andreasgrafen/cascade)
   Floating Find Bar by LittleFox (https://github.com/biglavis/LittleFox)
   MIT License
@@ -237,6 +237,12 @@
     --lwt-sidebar-text-color: var(--uc-color-text) !important;
     --lwt-sidebar-border-color: var(--uc-color-surface) !important;
     --sidebar-highlight-background-color: var(--uc-color-hover) !important;
+
+    /* Content container behind the page. Painting it base kills the white
+       flash Firefox shows while a page loads or during navigation. Chrome
+       surface only — does not touch website content (about:newtab keeps its
+       own opaque canvas). */
+    --tabpanel-background-color: var(--uc-color-base) !important;
   }
 
   /* ----------------------------------------------------------------------
@@ -258,6 +264,20 @@
     --panel-text-color: var(--uc-color-text) !important;
     --panel-border-color: var(--uc-color-surface) !important;
     --panel-separator-color: var(--uc-color-surface) !important;
+  }
+
+  /* Popup SHAPE and HOVER – always applied, unlike the colour block above.
+     Square corners and the accent-text hover are FoxOne identity (like the
+     accent cues), so a dynamic theme such as Adaptive Tab Bar Colour keeps
+     its colours but not its shapes or hover treatment; with the lwtheme
+     guard these tokens fell back to Nova's design-token radius and the
+     native hover block as soon as any theme extension was active.
+     toolkit popup.css defaults --panel-border-radius to 6px (arrow panels:
+     hamburger, extensions, permissions popups); context menus already sit
+     at 0 via their own :not([type="arrow"]) branch. Pin both to square so
+     every popup matches the findbar / context-menu / breakout-urlbar look. */
+  :is(panel, menupopup):not(#DateTimePickerPanel) {
+    --panel-border-radius: 0 !important;
     /* Row hover marks with accent text instead of a background block, the
        same cue FoxOne uses for toolbar icons and tab titles (issue #16).
        Panel rows (subviewbuttons) consume the ghost button tokens, a few
@@ -272,11 +292,6 @@
     --button-text-color-ghost-hover: var(--uc-color-accent) !important;
     --button-text-color-active: var(--uc-color-accent) !important;
     --button-text-color-ghost-active: var(--uc-color-accent) !important;
-    /* toolkit popup.css defaults --panel-border-radius to 6px (arrow panels:
-       hamburger, extensions, permissions popups); context menus already sit
-       at 0 via their own :not([type="arrow"]) branch. Pin both to square so
-       every popup matches the findbar / context-menu / breakout-urlbar look. */
-    --panel-border-radius: 0 !important;
     /* Row-level hover/select highlight has its own radius, separate from the
        panel's outer corners: --menuitem-border-radius drives native menuitems
        (context menus), --panel-menuitem-border-radius drives subviewbuttons
@@ -287,24 +302,55 @@
     --panel-menuitem-border-radius: 0 !important;
   }
 
+  /* Windows 11 Mica popups. Nova defaults widget.windows.mica to on
+     (NovaPrefs.sys.mjs), and widget.windows.mica.popups follows it, so on
+     Win11 toolkit menu.css switches panels AND menupopups to native
+     appearance (-moz-default-appearance: menupopup). The rounded corners
+     then come from DWM clipping the popup *window* — outside CSS reach, so
+     the --panel-border-radius: 0 above never shows. Opt the popups out of
+     the native backdrop; they fall back to the CSS-drawn path where the
+     square corners apply. The Mica branch also zeroes the shadow tokens
+     ("the mica backdrop takes care of our shadow"), so restore the toolkit
+     defaults (global-shared.css) to keep the same soft shadow non-Mica
+     systems get. #DateTimePickerPanel stays excluded, matching the popup
+     block above. No lwtheme guard: nsMenuPopupFrame grants the Mica backdrop
+     (and with it the DWM corner rounding) whenever the popup's effective
+     appearance is `menupopup`, theme or not – so the opt-out has to hold
+     under a dynamic theme too, or its popups come back rounded. */
+  @media (-moz-windows-mica-popups) {
+    :is(panel, menupopup):not(#DateTimePickerPanel) {
+      appearance: none !important;
+      --panel-box-shadow-margin: 4px !important;
+      --panel-box-shadow: 0 0 var(--panel-box-shadow-margin) rgba(0, 0, 0, 0.2) !important;
+      /* The Mica branch also empties the popup background at element level
+         (the backdrop was supposed to paint it); without a theme FoxOne's
+         base-colour rule above wins on specificity and covers that, but
+         under a dynamic theme it is off and menus went see-through.
+         `inherit` skips the element-level junk and resolves from :root,
+         where the theme's popup colour lives (or the [lwtheme] fallback
+         below). */
+      --panel-background-color: inherit !important;
+    }
+  }
+
   /* Context-menu item hover. Toolkit paints it with the -moz-menuhover
      system colour from a :where() rule (zero specificity, deliberately
      overridable); match the panel hover so both popup types highlight
      identically: accent text, no background block. */
-  :root:not([lwtheme]) menupopup :is(menuitem, menu)[_moz-menuactive]:not([disabled]) {
+  menupopup :is(menuitem, menu)[_moz-menuactive]:not([disabled]) {
     background-color: transparent !important;
     color: var(--uc-color-accent) !important;
   }
   /* Disabled rows have their own hover chip in toolkit menu.css
      (--menuitem-disabled-hover-background-color); clear that one too. */
-  :root:not([lwtheme]) menupopup :is(menuitem, menu)[_moz-menuactive][disabled] {
+  menupopup :is(menuitem, menu)[_moz-menuactive][disabled] {
     background-color: transparent !important;
   }
   /* Navigation row (back/forward/reload/bookmark icons): a disabled arrow
      answers hover with the hover yellow at disabled strength, mirroring a
      disabled toolbar button (#ffda85 under the native 0.4 opacity). Text
      menuitems keep their native GrayText and are not touched. */
-  :root:not([lwtheme]) #context-navigation > menuitem[_moz-menuactive][disabled] {
+  #context-navigation > menuitem[_moz-menuactive][disabled] {
     color: color-mix(in srgb, var(--uc-tab-hover-text) 40%, transparent) !important;
   }
 
@@ -378,6 +424,12 @@
   --toolbar-background-color: var(--lwt-accent-color) !important;
   --toolbox-background-color: var(--lwt-accent-color) !important;
   --toolbar-field-background-color: var(--lwt-accent-color) !important;
+  /* Popup surface fallback for the Mica opt-out's `inherit`: a theme that
+     defines popup colours puts them here as inline style (which beats these
+     non-!important rules); a theme without them would otherwise leave menus
+     transparent, so back them with FoxOne's own surface. */
+  --panel-background-color: var(--uc-color-base);
+  --panel-text-color: var(--uc-color-text);
 }
 
 /* Nova paints the URL field fill on .urlbar-input-container (the legacy
@@ -1879,10 +1931,14 @@ split-view-footer {
 /* ==========================================================================
    TASKBAR TABS — "Pin to taskbar" PWA-like windows.
    These use html[id^="taskbartab"] instead of #main-window.
-   Hide the navbar entirely for a clean app-like experience.
+   Strip the address bar, menu button and extensions button for a
+   clean app-like feel. Firefox stays reachable via the tab context
+   menu and keyboard shortcuts.
    ========================================================================== */
 
-html[id^="taskbartab"] #urlbar-container {
+html[id^="taskbartab"] #urlbar-container,
+html[id^="taskbartab"] #PanelUI-button,
+html[id^="taskbartab"] #unified-extensions-button {
   display: none !important;
 }
 

@@ -2040,6 +2040,36 @@ html[id^="taskbartab"] #unified-extensions-button {
 
 
 /* ==========================================================================
+   WINDOW CONTROLS — FoxOne-ified. Firefox paints min/max/close itself
+   (the native titlebar is hidden), so they never quite matched the
+   DWM-drawn buttons of other windows. Instead of imitating Windows:
+   the FoxOne model — no hover block, the glyph itself takes the colour.
+   Min/max hover amber; close hovers in the Windows close-red, convention
+   beats theme there. Applies to every chrome window (Library included).
+   ========================================================================== */
+
+.titlebar-button {
+  background-color: transparent !important;
+}
+.titlebar-button:hover {
+  background-color: transparent !important;
+  color: var(--uc-color-accent) !important;
+}
+.titlebar-close:hover {
+  color: #e81123 !important; /* Windows close-red; FoxOne has no red token */
+}
+/* Glyphs are context-fill SVGs — bind them to the button colour so the
+   hover colours above actually reach them (close-hover natively forces a
+   white fill on a red block; that block is gone now). */
+.titlebar-button,
+.titlebar-button > .toolbarbutton-icon {
+  -moz-context-properties: fill, stroke !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+
+/* ==========================================================================
    LIBRARY ("Bibliothek", places.xhtml) — selection follows the FoxOne
    model: accent text instead of a background block (same as tabs, icons,
    urlbar results, add-ons list). Hover gets an accent frame, square
@@ -2110,13 +2140,26 @@ html[id^="taskbartab"] #unified-extensions-button {
       background-color: var(--uc-color-base) !important;
     }
 
-    /* Pane splitter — hairline in the separator tone. */
-    #placesSplitter {
+    /* Separator lines. The visible strokes are NOT the treecol borders:
+       toolbox bottom edge, the trees' own borders and the pane splitter
+       all paint one, each in Nova's violet-tinted border token. Kill
+       every container border, then draw the one deliberate separator
+       (the pane splitter) as a surface hairline. Generic selectors on
+       purpose — the exact ids resisted two rounds of guessing. */
+    #placesToolbox,
+    #placesToolbar,
+    #placesView,
+    #detailsPane,
+    tree {
+      border: none !important;
+      box-shadow: none !important;
+    }
+    splitter:not(.tree-splitter) {
       appearance: none !important;
       border: none !important;
       background-color: var(--uc-color-surface) !important;
       min-width: 1px !important;
-      width: 1px !important;
+      max-width: 1px !important;
     }
 
     /* Column headers — flat on base, separator hairlines, sortable via
@@ -2126,8 +2169,24 @@ html[id^="taskbartab"] #unified-extensions-button {
       appearance: none !important;
       background-color: var(--uc-color-base) !important;
       color: var(--uc-color-text) !important;
+      /* kill the native borders first (inline-start comes in Nova's
+         violet-tinted border token), then draw FoxOne's own hairlines.
+         A header separator can also be painted as a background-image
+         gradient, box-shadow or outline — all off. */
+      border: none !important;
+      background-image: none !important;
+      box-shadow: none !important;
+      outline: none !important;
       border-inline-end: 1px solid var(--uc-color-surface) !important;
       border-bottom: 1px solid var(--uc-color-surface) !important;
+    }
+    /* Column-resize splitters between the headers — they paint their own
+       line on top of the treecol borders; keep the grab zone, lose the
+       paint. */
+    .tree-splitter {
+      appearance: none !important;
+      border: none !important;
+      background: transparent !important;
     }
     treecol:hover,
     .tree-columnpicker-button:hover {

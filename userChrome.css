@@ -1,6 +1,6 @@
 /*==============================================================================================*
 
-  FoxOne 3.3.7 – A minimalistic one-line Firefox theme
+  FoxOne 3.3.8 – A minimalistic one-line Firefox theme
   Based on Cascade (https://github.com/andreasgrafen/cascade)
   Floating Find Bar by LittleFox (https://github.com/biglavis/LittleFox)
   MIT License
@@ -258,8 +258,13 @@
      as accent text without a background block (see the button tokens below).
      #DateTimePickerPanel is excluded — it themes itself to the content
      colour scheme, and forcing chrome colours breaks a light-mode picker.
+     .autoscroller (middle-click scroll indicator) is excluded from all three
+     popup blocks: it is a panel whose entire look lives in these tokens at
+     element level (global-shared.css) — the double-arrow icon is PART of its
+     --panel-background-color value and 100% radius makes it round, so any
+     !important override here flattens it to a plain square.
      ---------------------------------------------------------------------- */
-  :root:not([lwtheme]) :is(panel, menupopup):not(#DateTimePickerPanel) {
+  :root:not([lwtheme]) :is(panel, menupopup):not(#DateTimePickerPanel, .autoscroller) {
     --panel-background-color: var(--uc-color-base) !important;
     --panel-text-color: var(--uc-color-text) !important;
     --panel-border-color: var(--uc-color-surface) !important;
@@ -276,7 +281,7 @@
      hamburger, extensions, permissions popups); context menus already sit
      at 0 via their own :not([type="arrow"]) branch. Pin both to square so
      every popup matches the findbar / context-menu / breakout-urlbar look. */
-  :is(panel, menupopup):not(#DateTimePickerPanel) {
+  :is(panel, menupopup):not(#DateTimePickerPanel, .autoscroller) {
     --panel-border-radius: 0 !important;
     /* Row hover marks with accent text instead of a background block, the
        same cue FoxOne uses for toolbar icons and tab titles (issue #16).
@@ -312,13 +317,13 @@
      square corners apply. The Mica branch also zeroes the shadow tokens
      ("the mica backdrop takes care of our shadow"), so restore the toolkit
      defaults (global-shared.css) to keep the same soft shadow non-Mica
-     systems get. #DateTimePickerPanel stays excluded, matching the popup
-     block above. No lwtheme guard: nsMenuPopupFrame grants the Mica backdrop
+     systems get. #DateTimePickerPanel and .autoscroller stay excluded,
+     matching the popup blocks above. No lwtheme guard: nsMenuPopupFrame grants the Mica backdrop
      (and with it the DWM corner rounding) whenever the popup's effective
      appearance is `menupopup`, theme or not – so the opt-out has to hold
      under a dynamic theme too, or its popups come back rounded. */
   @media (-moz-windows-mica-popups) {
-    :is(panel, menupopup):not(#DateTimePickerPanel) {
+    :is(panel, menupopup):not(#DateTimePickerPanel, .autoscroller) {
       appearance: none !important;
       --panel-box-shadow-margin: 4px !important;
       --panel-box-shadow: 0 0 var(--panel-box-shadow-margin) rgba(0, 0, 0, 0.2) !important;

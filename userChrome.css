@@ -1,6 +1,6 @@
 /*==============================================================================================*
 
-  FoxOne 3.3.8 – A minimalistic one-line Firefox theme
+  FoxOne 3.3.9 – A minimalistic one-line Firefox theme
   Based on Cascade (https://github.com/andreasgrafen/cascade)
   Floating Find Bar by LittleFox (https://github.com/biglavis/LittleFox)
   MIT License
@@ -246,6 +246,54 @@
   }
 
   /* ----------------------------------------------------------------------
+     NOVA VIOLET PURGE – one central lever plus its satellites.
+
+     Nova's violet (#d4c1ff and friends) enters the chrome through the
+     semantic accent tokens: with browser.nova.enabled the design tokens map
+     --color-accent-primary(-hover/-active) to the violet palette
+     (tokens-shared.css: light-dark(--color-violet-50, --color-violet-30)
+     etc.). Everything accent-coloured derives from these four: links
+     (--link-color), focus rings (--focus-outline-color), toggles
+     (moz-toggle pressed state), primary buttons, selected borders. Pinning
+     them to the FoxOne accent recolours all of it at once: protections
+     panel toggle, "Datenschutzeinstellungen" link, permission chips.
+
+     A handful of Nova tokens reference the violet palette DIRECTLY, past
+     the accent tokens; those are repointed individually below. Scoped
+     :root:not([lwtheme]) like the other surface colours: a dynamic theme
+     keeps its own accents. Inert without Nova (pre-Nova builds simply get
+     amber instead of the old cyan accent, which is on-brand anyway). */
+  :root:not([lwtheme]) {
+    /* The central lever: the semantic accent family. */
+    --color-accent-primary: var(--uc-color-accent) !important;
+    --color-accent-primary-hover: var(--uc-color-accent) !important;
+    --color-accent-primary-active: var(--uc-color-accent) !important;
+    --color-accent-primary-selected: var(--uc-color-accent) !important;
+
+    /* Direct violet references (satellites). */
+    /* Info-message surface, e.g. the "Firefox ist wachsam" card in the
+       protections panel (dark: --color-violet-70). The fox illustration
+       inside it is a baked SVG image and stays violet; only its card
+       recolours. */
+    --background-color-information: var(--uc-color-surface) !important;
+    --icon-color-information: var(--uc-color-accent) !important;
+    --icon-color-accent-primary-desaturated: var(--uc-color-accent) !important;
+    /* Generic chrome-button hover/active blocks (dark:
+       --color-violet-desaturated-50/-40). Inside popups FoxOne's panel
+       rules force these transparent and win there; this covers everything
+       outside popups (findbar, sidebar, infobars). */
+    --button-background-color-hover: var(--uc-color-hover) !important;
+    --button-background-color-active: var(--uc-color-hover) !important;
+    --button-background-color-primary-disabled: color-mix(in srgb, var(--uc-color-accent) 40%, var(--uc-color-base)) !important;
+    /* Base chrome text drifts to violet-desaturated-0 (#f2f0f8) under Nova;
+       pin to the palette text colour. */
+    --text-color: var(--uc-color-text) !important;
+    /* Nova paints the toolbox with a violet-leading gradient; FoxOne pins
+       the toolbox colour already, kill the gradient stop too. */
+    --toolbox-background-color-gradient-leading: var(--uc-color-base) !important;
+  }
+
+  /* ----------------------------------------------------------------------
      POPUP SURFACES — one family for arrow panels AND context menus.
 
      Nova removed the --arrowpanel-* tokens; panels and menupopups now share
@@ -305,6 +353,32 @@
        both so the selection colour matches the panel it sits in. */
     --menuitem-border-radius: 0 !important;
     --panel-menuitem-border-radius: 0 !important;
+  }
+
+  /* Extensions-panel gear buttons escape the hover treatment above: toolkit
+     declares the --uei-button-* family at :root (--uei-button-hover-bgcolor:
+     var(--button-background-color-ghost-hover), unified-extensions.css), so
+     the ghost token resolves against Nova's design tokens AT :root and
+     inherits down pre-baked as the violet default; the panel-scoped ghost
+     overrides never enter that resolution. Re-declare the uei tokens on the
+     button itself, same cue as every other panel row: no background block,
+     accent icon on hover/active. Inert on builds without the uei family. */
+  .unified-extensions-item-menu-button {
+    --uei-button-hover-bgcolor: transparent !important;
+    --uei-button-active-bgcolor: transparent !important;
+    --uei-button-hover-color: var(--uc-color-accent) !important;
+    --uei-button-active-color: var(--uc-color-accent) !important;
+  }
+
+  /* The separator under the account/profiles section in the app menu is the
+     "proton-zap": panelUI-shared.css paints its ::before with a gradient
+     border-image (under Nova var(--tab-border-color-accent)). Killing the
+     image removes the line entirely; recolouring attempts (border-color
+     fallback, explicit 1px border) never produced a visible line, so the
+     separator is retired rather than rethemed. Deliberate: no line beats a
+     violet gradient in a Gruvbox menu. */
+  toolbarseparator.proton-zap::before {
+    border-image: none !important;
   }
 
   /* Windows 11 Mica popups. Nova defaults widget.windows.mica to on

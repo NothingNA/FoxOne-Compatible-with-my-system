@@ -1,6 +1,6 @@
 /*==============================================================================================*
 
-  FoxOne 3.3.9 – A minimalistic one-line Firefox theme
+  FoxOne 3.4.1 – A minimalistic one-line Firefox theme
   Based on Cascade (https://github.com/andreasgrafen/cascade)
   Floating Find Bar by LittleFox (https://github.com/biglavis/LittleFox)
   MIT License
@@ -232,7 +232,13 @@
     --arrowpanel-border-color: var(--uc-color-surface) !important;
     --panel-item-hover-bgcolor: var(--uc-color-hover) !important;
 
-    /* Sidebar */
+    /* Sidebar. Current builds paint the revamped sidebar panel (#sidebar,
+       sidebar.css under sidebar.revamp) with --sidebar-background-color,
+       whose dark default is rgb(28 27 34) - a blue-grey that ignores the
+       FoxOne palette. The --lwt-* names below are only consumed when a theme
+       extension sets them, so pin the real tokens too. */
+    --sidebar-background-color: var(--uc-color-base) !important;
+    --sidebar-text-color: var(--uc-color-text) !important;
     --lwt-sidebar-background-color: var(--uc-color-base) !important;
     --lwt-sidebar-text-color: var(--uc-color-text) !important;
     --lwt-sidebar-border-color: var(--uc-color-surface) !important;
@@ -1050,6 +1056,23 @@ sidebar-main,
 }
 :is(#tabs-newtab-button, #new-tab-button):is(:active, [open]) {
   --toolbarbutton-icon-fill: var(--tab-selected-textcolor, #fabd2f) !important;
+}
+
+/* Bookmarks-bar overflow chevron (">>"): lives in #PersonalToolbar, so the
+   #nav-bar rules miss it. Same background clear as the buttons above, but
+   the fill is accent by DEFAULT (Max's call: the chevron is a permanent
+   overflow indicator, not an interaction target, so it wears the accent
+   outright, dimmed toward base at rest); hover lifts it to full accent. */
+#PlacesChevron {
+  --toolbarbutton-hover-background: transparent !important;
+  --toolbarbutton-active-background: transparent !important;
+  --toolbarbutton-icon-fill: color-mix(in srgb, var(--uc-color-accent) 65%, var(--uc-color-base)) !important;
+}
+#PlacesChevron:is(:hover, :active, [open]) > :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+  background-color: transparent !important;
+}
+#PlacesChevron:hover {
+  --toolbarbutton-icon-fill: var(--uc-color-accent) !important;
 }
 
 /* urlbar action icons: shield, site-settings, page actions, reader,
@@ -2019,6 +2042,259 @@ html[id^="taskbartab"] #urlbar-container,
 html[id^="taskbartab"] #PanelUI-button,
 html[id^="taskbartab"] #unified-extensions-button {
   display: none !important;
+}
+
+
+/* ==========================================================================
+   WINDOW CONTROLS — FoxOne-ified. Firefox paints min/max/close itself
+   (the native titlebar is hidden), so they never quite matched the
+   DWM-drawn buttons of other windows. Instead of imitating Windows:
+   the FoxOne model — no hover block, the glyph itself takes the colour.
+   Min/max hover amber; close hovers in the Windows close-red, convention
+   beats theme there. Applies to every chrome window (Library included).
+   ========================================================================== */
+
+.titlebar-button {
+  background-color: transparent !important;
+}
+.titlebar-button:hover {
+  background-color: transparent !important;
+  color: var(--uc-color-accent) !important;
+}
+.titlebar-close:hover {
+  color: #e81123 !important; /* Windows close-red; FoxOne has no red token */
+}
+/* Glyphs are context-fill SVGs — bind them to the button colour so the
+   hover colours above actually reach them (close-hover natively forces a
+   white fill on a red block; that block is gone now). */
+.titlebar-button,
+.titlebar-button > .toolbarbutton-icon {
+  -moz-context-properties: fill, stroke !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+
+/* ==========================================================================
+   LIBRARY ("Bibliothek", places.xhtml) — selection follows the FoxOne
+   model: accent text instead of a background block (same as tabs, icons,
+   urlbar results, add-ons list). Hover gets an accent frame, square
+   corners like the urlbar rows.
+
+   Both panes (folder tree left, item list right) are XUL <tree>s and are
+   only styleable through ::-moz-tree-* pseudo-elements. Those CANNOT read
+   CSS variables — the palette values are hardcoded here on purpose:
+   #fabd2f = --uc-color-accent. Retheming means touching this block too.
+   Dark-scheme gated like the COLOR THEME block: amber text without a
+   highlight needs the dark surface.
+
+   Known gap: the Downloads category inside the Library is a richlistbox,
+   not a tree — untouched for now.
+   ========================================================================== */
+
+@-moz-document url("chrome://browser/content/places/places.xhtml") {
+  @media (prefers-color-scheme: dark) {
+
+    /* Selected row — amber text, no highlight block. The unfocused
+       variant (native: grey) gets the same treatment, so the pane that
+       doesn't hold focus still shows where you are. */
+    treechildren::-moz-tree-row(selected),
+    treechildren::-moz-tree-row(selected, focus) {
+      background-color: transparent !important;
+      border: none !important;
+    }
+    treechildren::-moz-tree-cell-text(selected),
+    treechildren::-moz-tree-cell-text(selected, focus) {
+      color: #fabd2f !important;
+    }
+    /* Folder/page icons and twisties are context-fill — follow the text. */
+    treechildren::-moz-tree-image(selected),
+    treechildren::-moz-tree-image(selected, focus),
+    treechildren::-moz-tree-twisty(selected),
+    treechildren::-moz-tree-twisty(selected, focus) {
+      fill: #fabd2f !important;
+    }
+
+    /* Keyboard-cursor dashed ring: redundant next to the amber text
+       (arrow keys move the selection along anyway) — off. Sits BEFORE the
+       hover rule so hovering a current row still shows the frame. */
+    treechildren::-moz-tree-row(current),
+    treechildren::-moz-tree-row(current, focus) {
+      border: none !important;
+      /* the dashed ring is an outline, not a border (toolkit tree.css) */
+      outline: none !important;
+    }
+
+    /* Hover — accent frame, no fill. */
+    treechildren::-moz-tree-row(hover) {
+      background-color: transparent !important;
+      border: 1px solid #fabd2f !important;
+    }
+
+    /* ------------------------------------------------------------------
+       Surfaces — one tone for the whole window, like the main chrome.
+       Native it is a two-tone mix (#2b2a33 toolbar/list, #1c1b22 sidebar/
+       details pane); FoxOne paints everything base. Regular XUL from here
+       on, so the tokens work again.
+       ------------------------------------------------------------------ */
+    :root,
+    #placesToolbox,
+    #placesToolbar,
+    #placesView,
+    #detailsPane,
+    tree {
+      background-color: var(--uc-color-base) !important;
+    }
+
+    /* Separator lines. The visible strokes are NOT the treecol borders:
+       toolbox bottom edge, the trees' own borders and the pane splitter
+       all paint one, each in Nova's violet-tinted border token. Kill
+       every container border, then draw the one deliberate separator
+       (the pane splitter) as a surface hairline. Generic selectors on
+       purpose — the exact ids resisted two rounds of guessing. */
+    #placesToolbox,
+    #placesToolbar,
+    #placesView,
+    #detailsPane,
+    tree {
+      border: none !important;
+      box-shadow: none !important;
+    }
+    splitter:not(.tree-splitter) {
+      appearance: none !important;
+      border: none !important;
+      background-color: var(--uc-color-surface) !important;
+      min-width: 1px !important;
+      max-width: 1px !important;
+    }
+
+    /* Column headers — flat on base, separator hairlines, sortable via
+       click so they get the accent-text hover like every other control. */
+    treecol,
+    .tree-columnpicker-button {
+      appearance: none !important;
+      background-color: var(--uc-color-base) !important;
+      color: var(--uc-color-text) !important;
+      /* kill the native borders first (inline-start comes in Nova's
+         violet-tinted border token), then draw FoxOne's own hairlines.
+         A header separator can also be painted as a background-image
+         gradient, box-shadow or outline — all off. */
+      border: none !important;
+      background-image: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+      border-inline-end: 1px solid var(--uc-color-surface) !important;
+      border-bottom: 1px solid var(--uc-color-surface) !important;
+    }
+    /* Column-resize splitters between the headers — they paint their own
+       line on top of the treecol borders; keep the grab zone, lose the
+       paint. */
+    .tree-splitter {
+      appearance: none !important;
+      border: none !important;
+      background: transparent !important;
+    }
+    treecol:hover,
+    .tree-columnpicker-button:hover {
+      color: var(--uc-color-accent) !important;
+    }
+
+    /* ------------------------------------------------------------------
+       Toolbar buttons — no hover block, accent text instead. Verwalten /
+       Ansichten / Importieren und Sichern are <menu> elements dressed as
+       buttons (#placesMenu), only back/forward are real toolbarbuttons —
+       both need covering. Icons and dropmarkers are context-fill and
+       follow via currentColor.
+       ------------------------------------------------------------------ */
+    #placesToolbar toolbarbutton,
+    #placesMenu > menu {
+      appearance: none !important;
+      background: transparent !important;
+      color: var(--uc-color-text) !important;
+    }
+    #placesToolbar toolbarbutton:not([disabled]):hover,
+    #placesMenu > menu:hover,
+    #placesMenu > menu[_moz-menuactive],
+    #placesMenu > menu[open] {
+      background: transparent !important;
+      color: var(--uc-color-accent) !important;
+    }
+
+    /* ------------------------------------------------------------------
+       Text fields (search box, details-pane inputs) — urlbar model:
+       base at rest, surface plus accent border on focus.
+       ------------------------------------------------------------------ */
+    #searchFilter,
+    #detailsPane input {
+      appearance: none !important;
+      background-color: var(--uc-color-base) !important;
+      color: var(--uc-color-text) !important;
+      border: 1px solid var(--uc-color-surface) !important;
+      border-radius: var(--uc-border-radius) !important;
+    }
+    /* The search pill ignores the id selector — its input sits behind a
+       shadow boundary, which descendant selectors can't cross. User
+       sheets apply INSIDE chrome shadow trees though (same mechanism the
+       about:-page theming rides on), so bare element selectors reach it.
+       Blast radius is fine: every input in this window is the search box
+       or a details-pane field, and both get the same treatment. */
+    input {
+      background-color: var(--uc-color-base) !important;
+      color: var(--uc-color-text) !important;
+    }
+    input:focus {
+      background-color: var(--uc-color-surface) !important;
+    }
+    #searchFilter[focused],
+    #detailsPane input:focus {
+      background-color: var(--uc-color-surface) !important;
+      border-color: var(--uc-color-accent) !important;
+    }
+
+    /* Native focus ring — drawn straight in the Windows accent colour
+       (system cyan), past every token. Replace, don't tint: outline-style
+       auto is platform-rendered and unreliable to recolour. */
+    input:focus-visible {
+      outline: 2px solid var(--uc-color-accent) !important;
+    }
+
+    /* ------------------------------------------------------------------
+       Tag selector (the checkbox list behind the Schlagwörter expander).
+       Selection follows the tree model: amber text, no block. The native
+       checkboxes render in the Windows accent colour — redrawn flat:
+       base/surface at rest, filled amber with a dark check when set.
+       ------------------------------------------------------------------ */
+    #editBMPanel_tagsSelector {
+      background-color: var(--uc-color-base) !important;
+      border: 1px solid var(--uc-color-surface) !important;
+    }
+    #editBMPanel_tagsSelector richlistitem[selected] {
+      background-color: transparent !important;
+      color: var(--uc-color-accent) !important;
+      outline: none !important;
+    }
+    #editBMPanel_tagsSelector richlistitem[selected] checkbox {
+      color: inherit !important;
+    }
+    #editBMPanel_tagsSelector .checkbox-check {
+      appearance: none !important;
+      width: 16px !important;
+      height: 16px !important;
+      border: 1px solid var(--uc-color-hover) !important;
+      border-radius: 3px !important;
+      background-color: var(--uc-color-base) !important;
+    }
+    #editBMPanel_tagsSelector checkbox[checked] .checkbox-check {
+      background-color: var(--uc-color-accent) !important;
+      border-color: var(--uc-color-accent) !important;
+      background-image: url("chrome://global/skin/icons/check.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 12px;
+      -moz-context-properties: fill;
+      fill: #282828; /* base — dark check on amber */
+    }
+  }
 }
 
 
